@@ -8,9 +8,9 @@ Routing accuracy on the held-out fixture: **100.00%** (15/15 correct, floor is 8
 
 | Service | Requests | Errors | Error Rate | p95 Latency (s) |
 |---|---|---|---|---|
-| router | 38 | 0 | 0.00% | 0.0750 |
-| ner-kg | 32 | 0 | 0.00% | 0.0100 |
-| rag | 30 | 0 | 0.00% | 0.0050 |
+| router | 28 | 0 | 0.00% | 0.0750 |
+| ner-kg | 22 | 0 | 0.00% | 0.0050 |
+| rag | 20 | 0 | 0.00% | 0.0050 |
 
 ## Routing Pattern
 
@@ -19,4 +19,4 @@ Routing accuracy on the held-out fixture: **100.00%** (15/15 correct, floor is 8
 
 ## Cross-Service Correlation
 
-Each routing decision carries the `request_id` the router generates for that request. The router forwards this id on to the chosen backend via the `X-Request-ID` header, and every backend echoes the same id on its own structured log line, so filtering `docker compose logs` for one request-id shows a continuous trace across router → backend for that request. Sample request ids captured during this run: 81052b8f-b51a-4f61-8e70-9ea9f06f41e0, 483f1c6c-5a4d-4edb-a463-3b2653728dd5, 4b547351-2673-467e-8526-011387b9acc5.
+Each routing decision carries the `request_id` the router generates for that request. The router forwards this id on to the chosen backend via the `X-Request-ID` header, and every backend echoes the same id on its own structured log line, so filtering `docker compose logs` for one request-id shows a continuous trace across router → backend for that request. Sample request ids captured during this run: e2bbd83f-abe0-481a-bfc8-35b6fb771014, b0e67b99-2869-4b34-b72c-44b2b454b425, 0acb523c-455b-4dac-965e-b48d1c991a59.

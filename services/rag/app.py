@@ -17,13 +17,7 @@ import time
 import uuid
  
 from fastapi import FastAPI, Request
-from prometheus_client import (
-    CONTENT_TYPE_LATEST,
-    CollectorRegistry,
-    Counter,
-    Histogram,
-    generate_latest,
-)
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel
 from starlette.responses import Response
  
@@ -37,17 +31,13 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(SERVICE)
  
  
-REGISTRY = CollectorRegistry()
- 
 REQUESTS = Counter(
-    "service_requests_total", "Requests per endpoint", ["service", "endpoint", "status"],
-    registry=REGISTRY,
+    "service_requests_total", "Requests per endpoint", ["service", "endpoint", "status"]
 )
 LATENCY = Histogram(
     "service_request_latency_seconds",
     "Request latency by endpoint",
     ["service", "endpoint"],
-    registry=REGISTRY,
 )
  
  
@@ -239,4 +229,4 @@ def answer(payload: AnswerIn) -> dict:
  
 @app.get("/metrics")
 def metrics() -> Response:
-    return Response(generate_latest(REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)

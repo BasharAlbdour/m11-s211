@@ -21,13 +21,7 @@ from typing import Literal
 
 import httpx
 from fastapi import FastAPI, Request
-from prometheus_client import (
-    CONTENT_TYPE_LATEST,
-    CollectorRegistry,
-    Counter,
-    Histogram,
-    generate_latest,
-)
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel
 from starlette.responses import Response
 
@@ -37,21 +31,16 @@ RAG_URL = os.environ.get("RAG_URL", "http://rag:8000")
 
 app = FastAPI()
 
-REGISTRY = CollectorRegistry()
-
 REQUESTS = Counter(
-    "service_requests_total", "Requests per endpoint", ["service", "endpoint", "status"],
-    registry=REGISTRY,
+    "service_requests_total", "Requests per endpoint", ["service", "endpoint", "status"]
 )
 LATENCY = Histogram(
     "service_request_latency_seconds",
     "Request latency by endpoint",
     ["service", "endpoint"],
-    registry=REGISTRY,
 )
 ROUTING_DECISIONS = Counter(
-    "router_decisions_total", "Routing decisions by target backend", ["target"],
-    registry=REGISTRY,
+    "router_decisions_total", "Routing decisions by target backend", ["target"]
 )
 
 # In-memory routing decision log. Bounded to keep memory predictable in CI.
@@ -214,4 +203,4 @@ def decisions(limit: int = 1000) -> dict:
 
 @app.get("/metrics")
 def metrics() -> Response:
-    return Response(generate_latest(REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
