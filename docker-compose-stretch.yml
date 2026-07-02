@@ -1,0 +1,62 @@
+services:
+  ner-kg:
+    build:
+      context: ./services/ner_kg
+    container_name: stretch-ner-kg
+    ports:
+      - "8101:8000"
+    environment:
+      - SERVICE_NAME=ner-kg
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/metrics').status == 200 else 1)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - stretch-net
+
+  rag:
+    build:
+      context: ./services/rag
+    container_name: stretch-rag
+    ports:
+      - "8102:8000"
+    environment:
+      - SERVICE_NAME=rag
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/metrics').status == 200 else 1)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - stretch-net
+
+  router:
+    build:
+      context: ./services/router
+    container_name: stretch-router
+    ports:
+      - "8100:8000"
+    environment:
+      - SERVICE_NAME=router
+      - NER_KG_URL=http://ner-kg:8000
+      - RAG_URL=http://rag:8000
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/metrics').status == 200 else 1)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    depends_on:
+      ner-kg:
+        condition: service_healthy
+      rag:
+        condition: service_healthy
+    networks:
+      - stretch-net
+
+networks:
+  stretch-net:
+    driver: bridge

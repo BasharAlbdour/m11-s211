@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "description": "Held-out routing fixture. Each entry has a question and the expected backend. Used by analyze_routing.py and the autograder.",
+    "expected_targets": ["ner-kg", "rag"],
+    "accuracy_floor": 0.80
+  },
+  "questions": [
+    {"question": "Extract the company names mentioned in this earnings report.", "expected": "ner-kg"},
+    {"question": "List all people and organizations in this article.", "expected": "ner-kg"},
+    {"question": "What entities appear in the following text?", "expected": "ner-kg"},
+    {"question": "Find every product mentioned in this paragraph.", "expected": "ner-kg"},
+    {"question": "Which companies has Microsoft acquired since 2020?", "expected": "ner-kg"},
+    {"question": "Who are the suppliers of TSMC according to the knowledge graph?", "expected": "ner-kg"},
+    {"question": "What is the parent company of Anthropic?", "expected": "ner-kg"},
+    {"question": "Return the entities of type ORGANIZATION in this passage.", "expected": "ner-kg"},
+    {"question": "Summarize how transformer attention works.", "expected": "rag"},
+    {"question": "Explain the trade-off between micro and macro F1.", "expected": "rag"},
+    {"question": "How should I think about latency-vs-load profiling for an inference service?", "expected": "rag"},
+    {"question": "Why does prometheus prefer histograms over summaries for latency?", "expected": "rag"},
+    {"question": "What is the role of a router in a multi-agent system?", "expected": "rag"},
+    {"question": "Walk me through how RAG grounding rate is computed.", "expected": "rag"},
+    {"question": "Describe the difference between vector and keyword retrieval.", "expected": "rag"}
+  ]
+}
